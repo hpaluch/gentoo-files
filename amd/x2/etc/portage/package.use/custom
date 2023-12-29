@@ -1,0 +1,34 @@
+# Custom USE flags per app
+app-text/ghostscript-gpl -dbus
+app-arch/cpio  -nls
+app-editors/vim -X -acl -crypt -sound
+>=gui-apps/swaybg-1.2.0 gdk-pixbuf
+# required for Wayland
+sys-auth/seatd server
+www-client/firefox pulseaudio openh264
+# required to build firefox
+#>=media-libs/libvpx-1.13.1 postproc
+>=media-plugins/alsa-plugins-1.2.7.1-r1 pulseaudio
+
+# required by waybar
+>=dev-libs/libdbusmenu-16.04.0-r2 gtk3
+# enable pulseuadio
+gui-apps/waybar pulseuadio network evdev experimental
+
+# cdr has lots of dependencies - disabled
+media-gfx/gthumb -cdr
+dev-lang/mono minimal
+media-sound/pavucontrol pulseaudio
+# disable X (we use wayland where xauth for root will not work)
+app-portage/cfg-update -X
+dev-vcs/git doc
+
+# CHROMIUM
+# 2 lines below were produced with: emerge -an www-client/chromium`
+>=sys-libs/zlib-1.3-r2 minizip
+>=net-libs/nodejs-20.6.1 inspector
+# enabled pulseaudio, widevine is DRM codec required for Spotify, etc...
+www-client/chromium pulseaudio widevine
+
+media-libs/libcanberra pulseaudio
+gnome-base/gvfs blueray fuse samba gphoto2

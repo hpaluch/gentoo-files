@@ -1,0 +1,1 @@
+bindsym Ctrl+F12 exec /usr/bin/firefox
