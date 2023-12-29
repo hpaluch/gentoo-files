@@ -1,4 +1,8 @@
 Gentoo AMD X2 machine:
+- CPU: `AMD Athlon(tm) 64 X2 Dual Core Processor 3800+`
+- GPU: `NVIDIA Corporation GT218 [GeForce 210] (rev a2)`
+  - supported by Nouveau driver
+  - supported by binary drivers up to version 340 (!)
 
 ```shell
 $ emerge -an app-misc/resolve-march-native app-portage/cpuid2cpuflags
