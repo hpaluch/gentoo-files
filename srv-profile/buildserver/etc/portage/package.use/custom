@@ -1,0 +1,3 @@
+# avoid costly rebuild of gcc
+sys-devel/gcc openmp -zstd
+

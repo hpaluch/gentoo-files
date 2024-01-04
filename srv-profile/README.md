@@ -20,7 +20,7 @@ On Host (Debian 12):
 ```shell
 sudo apt-get update
 sudo apt-get dist-upgrade
-sudo apt-get install curl tmux vim jq mc lynx
+sudo apt-get install curl tmux vim jq mc lynx git
 mkdir -p /srv/gentoo/ROOT-SRV
 cd /srv/gentoo
 curl -fLO http://ftp.linux.cz/pub/linux/gentoo/releases/amd64/autobuilds/current-stage3-amd64-openrc/stage3-amd64-openrc-20231231T163203Z.tar.xz
@@ -33,6 +33,8 @@ cp -L /etc/resolv.conf etc/
 mkdir --parents etc/portage/repos.conf
 cp usr/share/portage/config/repos.conf etc/portage/repos.conf/gentoo.conf
 # Copy these files from git to /srv/gentoo/ROOT-SRV
+# - buildserver/bind_mounts.sh buildserver/init_shell.sh
+# - buildserver/etc/portage/*
 # TODO: ...
 ./bind_mounts.sh
 tmux
@@ -48,6 +50,8 @@ eselect profile list
 # Not needed: eselect profile set 1
 
 # TODO:
+# gentoo provides "euse" and other commands
+emerge -an app-portage/gentoolkit
 emerge --ask --verbose --update --deep --newuse @world
 ```
 
