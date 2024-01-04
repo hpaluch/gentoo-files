@@ -1,5 +1,14 @@
 # Gentoo Files
 
+## Future profiles
+
+* [srv-profile/](srv-profile/) - my Gentoo profiles for CLI Servers. Work in progress!
+
+
+## Old profiles
+
+They are under [amd/](amd/).
+
 Here are my Gentoo configuration files that I use on my machines.
 
 I have two computers
