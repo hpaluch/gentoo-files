@@ -99,5 +99,15 @@ eselect profile list
 # gentoo provides "euse" and other commands
 emerge -an app-portage/gentoolkit
 emerge --ask --verbose --update --deep --newuse @world
+# Timezone stuff - UTC recommended for servers
+echo UTC > /etc/timezone
+emerge --config sys-libs/timezone-data
+# Locales:
+# copy buildserver/etc/locale.gen to chroot
+# and run:
+locale-gen
+eselect locale list
+# keeping:  [13]  C.UTF8 *
+env-update && source /init_shell.sh
 ```
 
