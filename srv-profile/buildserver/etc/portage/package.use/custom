@@ -7,3 +7,7 @@ sys-boot/grub -fonts -nls -themes
 # required by sys-boot/os-prober-1.81::gentoo
 # required by sys-boot/os-prober (argument)
 >=sys-boot/grub-2.06-r9 mount
+app-admin/sudo -nls -sendmail -ssl
+app-admin/syslog-ng caps
+app-admin/sysstat -nls
+sys-apps/smartmontools caps

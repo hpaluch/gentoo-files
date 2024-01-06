@@ -100,7 +100,8 @@ eselect profile list
 # using:   [1]   default/linux/amd64/17.1 (stable) *
 # Not needed: eselect profile set 1
 
-# TODO:
+# I no longer use this, but they may be useful:
+emerge -an app-portage/cpuid2cpuflags app-misc/resolve-march-native
 # gentoo provides "euse" and other commands
 emerge -an app-portage/gentoolkit
 emerge --ask --verbose --update --deep --newuse @world
@@ -141,5 +142,24 @@ grub-install /dev/sdX
 # line below requires valid /etc/fstab
 grub-mkconfig -o /boot/grub/grub.cfg
 
+# tools required for new system
+emerge -an net-misc/dhcpcd app-admin/syslog-ng app-admin/sudo
+
+rc-update add dhcpcd default
+rc-update add syslog-ng default
+rc-update add sshd default
+
+# optional but popular
+emerge -an www-client/lynx sys-fs/ncdu app-portage/gentoolkit app-editors/vim app-misc/mc \
+ app-misc/tmux app-admin/sysstat sys-apps/smartmontools \
+ app-shells/bash-completion sys-process/lsof
+
+passwd root
+/usr/sbin/useradd -m -s /bin/bash -G wheel USERNAME
+passwd USERNAME
+
 ```
+
+General notes:
+- use `dispatch-conf` to merge config changes in `/etc`
 
