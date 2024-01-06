@@ -23,8 +23,8 @@ emerge --config sys-libs/timezone-data
 # only for binpkg server:
 emerge -an www-servers/lighttpd
 
-emerge -an sys-kernel/linux-firmware
-emerge -an sys-kernel/gentoo-sources sys-apps/pciutils sys-kernel/dracut \
+emerge -an sys-kernel/linux-firmware sys-kernel/gentoo-sources
+  sys-apps/pciutils sys-kernel/dracut \
   sys-fs/btrfs-progs sys-fs/lvm2 sys-boot/grub sys-boot/os-prober
 # selecting kernel sources
 eselect kernel list

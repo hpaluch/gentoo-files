@@ -72,6 +72,11 @@ cd /srv/gentoo
 curl -fLO http://ftp.linux.cz/pub/linux/gentoo/releases/amd64/autobuilds/current-stage3-amd64-openrc/stage3-amd64-openrc-20231231T163203Z.tar.xz
 cd ROOT-SRV
 tar xpvf ../stage3-*.tar.xz --xattrs-include='*.*' --numeric-owner
+# If you are using Azure VM with temporary disk under /mnt you can do this:
+sudo umount /mnt 
+sudo mount /dev/disk/cloud/azure_resource-part1 /srv/gentoo/ROOT-SRV/var/tmp
+# WARNING! Do not modify /etc/fstab - cloud-init will overwrite it on boot...
+
 # recommended - mount /srv/gentoo/ROOT-SRV/var/tmp/ on fast disk 
 cd /srv/gentoo/ROOT-SRV
 # NOTE: prepated etc/make.conf
@@ -109,5 +114,32 @@ locale-gen
 eselect locale list
 # keeping:  [13]  C.UTF8 *
 env-update && source /init_shell.sh
+# Now preparing for kernel build:
+emerge -an sys-kernel/linux-firmware
+# the other packages are requierd for initramfs and/or boot:
+emerge -an sys-kernel/gentoo-sources
+# selecting kernel sources
+eselect kernel list
+eselect kernel set 1
+
+# dracut and its dependencies
+emerge -an sys-apps/pciutils sys-kernel/dracut \
+  sys-fs/btrfs-progs sys-fs/lvm2 sys-fs/squashfs-tools
+
+# building kernel sources
+cd /usr/src/linux
+cp /THIS_REPO/kernels/srv_defconfig /usr/src/linux/arch/x86/configs
+make srv_defconfig
+make menuconfig
+make -j`nproc` && make modules_install && make install  
+dracut --kver=`cat /usr/src/linux/include/config/kernel.release`
+
+# boot loader
+emerge -an sys-boot/grub sys-boot/os-prober
+# run on target only:
+grub-install /dev/sdX
+# line below requires valid /etc/fstab
+grub-mkconfig -o /boot/grub/grub.cfg
+
 ```
 
