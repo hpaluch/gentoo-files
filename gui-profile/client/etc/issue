@@ -1,0 +1,10 @@
+
+This is \n (\s \m \r) \t
+
+IP NAT: eth0: \4{eth0}
+IP Host-only: eth1: \4{eth1}
+
+Type:
+a) "startx" to run Xfce4 (X-Window)
+b) "start-sway.sh" - starts Sway (Wayland) with HW cursor workaround
+

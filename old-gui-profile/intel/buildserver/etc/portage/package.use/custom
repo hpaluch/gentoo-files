@@ -1,0 +1,23 @@
+# Custom USE flags per app
+app-text/ghostscript-gpl -dbus
+app-arch/cpio  -nls
+app-editors/vim -X -acl -crypt -sound
+
+# required to install sway/wayland
+>=gui-apps/swaybg-1.2.0 gdk-pixbuf
+# required for Wayland
+sys-auth/seatd server
+# ensure that Firefox really uses Wayland
+www-client/firefox -X pulseaudio openh264
+# required to build firefox
+>=media-libs/libvpx-1.13.1 postproc
+>=media-plugins/alsa-plugins-1.2.7.1-r1 pulseaudio
+
+# avoid costly rebuild with:
+# emerge --ask --verbose --update --deep --newuse @world
+#sys-devel/binutils -zstd
+#sys-devel/gcc -zstd fortran openmp
+#sys-devel/llvm -zstd
+#dev-libs/boost -zstd
+#dev-db/sqlite -icu
+#dev-libs/elfutils -zstd

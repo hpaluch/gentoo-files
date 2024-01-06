@@ -1,0 +1,164 @@
+# Emerge list for my Universal GUI profile
+
+Created with
+1. shell: fgrep ' *** emerge ' var/log/emerge.log | sed 's/^.* emerge/emerge/' > tmp/emerge.list
+2. then in vim: :%s/--.*--[^ ]\+/-an/
+3. removing dupilcate lines:  perl -ne 'print if ++$k{$_}==1'  < tmp/emerge.list
+3. manually cleaned up
+
+emerge -an app-portage/cpuid2cpuflags app-misc/resolve-march-native
+resolve-march-native
+cpuid2cpuflags
+  
+echo "Europe/Prague" > /etc/timezone
+emerge --config sys-libs/timezone-data
+vi 
+locale-gen
+
+# world
+emerge --ask --verbose --update --deep --newuse @world
+
+emerge --config sys-libs/timezone-data
+
+# only for binpkg server:
+emerge -an www-servers/lighttpd
+
+emerge -an sys-kernel/linux-firmware
+emerge -an sys-kernel/gentoo-sources sys-apps/pciutils sys-kernel/dracut \
+  sys-fs/btrfs-progs sys-fs/lvm2 sys-boot/grub sys-boot/os-prober
+# selecting kernel sources
+eselect kernel list
+eselect kernel set 1
+# building kernel sources
+cd /usr/src/linux
+cp /THIS_REPO/kernels/ pilvbox_defconfig /usr/src/linux/arch/x86/configs
+make pilvbox_defconfig
+make menuconfig
+make && make modules_install && make install  
+
+emerge -an sys-fs/squashfs-tools
+emerge -an lynx
+emerge -an net-misc/dhcpcd
+emerge -an app-admin/syslog-ng
+emerge -an sudo
+emerge -an sys-fs/ncdu app-portage/gentoolkit app-editors/vim app-misc/mc app-admin/sudo \
+ app-misc/tmux app-admin/sysstat sys-apps/smartmontools net-misc/dhcpcd app-admin/syslog-ng \
+ sys-process/cronie app-shells/bash-completion sys-process/lsof
+
+rc-update add dhcpcd default
+rc-update add syslog-ng default
+rc-update add sshd default
+passwd root
+/usr/sbin/useradd -m -s /bin/bash -G wheel USERNAME
+passwd USERNAME
+grub-install /dev/sdX
+dracut --kver=`cat /usr/src/linux/include/config/kernel.release`
+grub-mkconfig -o /boot/grub/grub.cfg
+
+
+emerge -an dev-vcs/git dev-vcs/git-lfs
+
+emerge -an media-sound/alsa-utils
+rc-update add alsasound boot
+usermod -G audio -a USERNAME
+
+emerge -an media-sound/mpg123
+emerge -an gui-wm/sway sys-auth/seatd gui-apps/foot x11-misc/dmenu media-fonts/terminus-font
+rc-update add seatd default
+usermod -G video,seat -a USERNAME
+
+emerge -an gui-apps/waybar
+emerge -an gui-apps/slurp gui-apps/grim
+
+emerge -an x11-base/xorg-server
+usermod -a -G input USERNAME
+usermod -G video,seat -a USERNAME
+
+emerge -an x11-apps/xinit x11-terms/xterm
+emerge -an xfce-extra/xfce4-notifyd
+emerge -an xfce-base/xfce4-meta
+emerge -an xfce-extra/xfce4-cpugraph-plugin xfce-extra/xfce4-diskperf-plugin \
+  xfce-extra/xfce4-netload-plugin xfce-extra/xfce4-pulseaudio-plugin
+emerge -an x11-misc/xdotool x11-misc/wmctrl
+emerge -an www-client/firefox
+
+rc-update add dbus default
+
+# only for VirtualBox guest:
+emerge -an app-emulation/virtualbox-guest-additions
+usermod -a -G vboxguest USERNAME
+
+emerge -an app-text/evince
+emerge -an media-gfx/gthumb
+emerge -an media-gfx/imagemagick
+# provides video acceleration info:
+emerge -an x11-misc/vdpauinfo
+# audio player
+emerge -an media-sound/audacious
+# developer editor
+emerge -an dev-util/geany
+# oldest Linux video player
+emerge -an media-video/mplayer
+# for Eclipse CDT, etc...
+emerge -an dev-java/openjdk-bin
+emerge -an x11-misc/lightdm
+
+# only if you want to start display manager on boot
+rc-update add display-manager default
+# can be again disabled with:
+rc-update del display-manager default
+
+emerge -an x11-apps/mesa-progs
+# 2 lines below are to get simple Program menu from .desktop files
+emerge -an dev-libs/bemenu
+emerge -an x11-misc/j4-dmenu-desktop
+emerge -an dev-util/strace
+
+emerge -an net-analyzer/wireshark
+usermod -a -G pcap USERNAME
+
+# Updates on 20230103 14h CET
+emerge-webrsync
+emerge --ask --verbose --update-if-installed --deep --newuse @world
+emerge -a --depclean
+# we want to keep these packages
+emerge -an media-fonts/liberation-fonts app-editors/nano
+# confirmed removal of:
+# =dev-libs/boehm-gc-8.2.4 =virtual/w3m-1 =dev-lang/go-bootstrap-1.18.6 =app-crypt/gpgme-1.22.0 =www-client/w3m-0.5.3_p20230121
+emerge -a --depclean
+
+# Chromium takes this long time (14 hours)
+nice ionice emerge -an www-client/chromium
+qlop
+>>> dev-util/gn: 1′37″
+>>> www-client/chromium: 14:37:19
+
+# around 2 hours 
+emerge -an app-office/libreoffice
+
+# only for KVM guests:
+emerge -an app-emulation/qemu-guest-agent
+rc-update add qemu-guest-agent default
+emerge -an app-emulation/spice-vdagent
+rc-update add spice-vdagent default
+
+# Updates on 20230104 14:30 CET
+emerge-webrsync
+emerge --ask --verbose --update-if-installed --deep --newuse @world
+
+# 20240105 - libvirt https://wiki.gentoo.org/wiki/Libvirt
+emerge -an app-emulation/qemu
+# answer yes to add USE lags
+emerge -an app-emulation/libvirt
+# merge new USE flags
+dispatch-conf
+# and again
+emerge -an app-emulation/libvirt
+usermod -a -G libvirt USERNAME
+emerge -an app-emulation/virt-manager
+dispatch-conf
+emerge -an app-emulation/virt-manager
+# required for ISO location of virt-install:
+emerge -an dev-libs/libisoburn
+emerge -an app-emulation/guestfs-tools
+

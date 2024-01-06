@@ -1,0 +1,55 @@
+# Custom USE flags per app
+app-text/ghostscript-gpl -dbus
+app-arch/cpio  -nls
+app-editors/vim -X -acl -crypt -sound
+>=gui-apps/swaybg-1.2.0 gdk-pixbuf
+# required for Wayland
+sys-auth/seatd server
+www-client/firefox openh264
+
+# required by waybar
+>=dev-libs/libdbusmenu-16.04.0-r2 gtk3
+# enable pulseuadio
+gui-apps/waybar network evdev experimental
+
+# cdr has lots of dependencies - disabled
+media-gfx/gthumb -cdr
+dev-lang/mono minimal
+# disable X (we use wayland where xauth for root will not work)
+app-portage/cfg-update -X
+dev-vcs/git doc
+
+# CHROMIUM
+# 2 lines below were produced with: emerge -an www-client/chromium`
+>=sys-libs/zlib-1.3-r2 minizip
+>=net-libs/nodejs-20.6.1 inspector
+# enabled widevine is DRM codec required for Spotify, etc...
+www-client/chromium widevine
+
+gnome-base/gvfs blueray fuse samba gphoto2
+
+sys-devel/gcc -zstd
+
+# required by sys-boot/os-prober-1.81::gentoo
+# required by sys-boot/os-prober (argument)
+>=sys-boot/grub-2.06-r9 mount
+dev-vcs/git doc
+media-sound/mpg123 -pulseaudio
+media-libs/libsdl2 -pulseaudio
+# required by www-client/firefox-115.6.0::gentoo[system-libvpx]
+# required by www-client/firefox (argument)
+>=media-libs/libvpx-1.13.1-r1 postproc
+# disable -gnome to avoid accountsservice
+x11-misc/lightdm -gnome
+dev-libs/bemenu doc
+app-emulation/qemu doc fuse io-uring iscsi lzo nfs sdl-image spice ssh virtfs virgl usbredir
+# required by app-emulation/libvirt-9.4.0-r4::gentoo[virt-network]
+# required by dev-python/libvirt-python-9.4.0::gentoo
+>=net-dns/dnsmasq-2.89-r1 script
+# required by app-crypt/swtpm-0.8.1-r2::gentoo
+# required by app-emulation/libvirt-9.4.0-r4::gentoo[qemu]
+# required by dev-python/libvirt-python-9.4.0::gentoo
+>=net-libs/gnutls-3.8.0 tools pkcs11
+# required by app-emulation/virt-manager-4.1.0::gentoo[gui,-test]
+# required by app-emulation/virt-manager (argument)
+>=net-misc/spice-gtk-0.42-r3 usbredir
