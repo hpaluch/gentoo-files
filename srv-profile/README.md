@@ -163,3 +163,166 @@ passwd USERNAME
 General notes:
 - use `dispatch-conf` to merge config changes in `/etc`
 
+## Boostraping Buildserver Image to Target
+
+Now we have to copy this Server filesystem to real Target.
+
+First, still on build server, create backup tarball of Gentoo filesystem.
+Using script `backup-chroot-srv.sh` with contents:
+```shell
+#!/bin/bash
+set -xeuo pipefail
+suffix=ROOT-SRV
+root=/srv/gentoo/$suffix
+sudo tar -cav --numeric-owner --one-file-system \
+	--exclude=./var/cache/distfiles \
+       	-f `dirname $0`/gentoo-$suffix-rootfs-`date '+%s'`.tar.zst -C $root .
+exit 0
+```
+Run this script on Build server - it will produce tarball with name,
+for example: `gentoo-ROOT-SRV-rootfs-1704555258.tar.zst`.
+
+Now transfer this `.tar.zst` to place from where there will be reachable Target VM.
+
+Now create Target VM, I used `virt-manager` (libvirt GUI) with these parameters:
+- CPU: 2 (or more)
+- Memory: 2GB (or more)
+- Disk: 12GB, Virtio BLK (`/dev/vdaX`)
+- ISO image:
+  - download: http://ftp.linux.cz/pub/linux/gentoo/releases/amd64/autobuilds/current-install-amd64-minimal/install-amd64-minimal-20231231T163203Z.iso
+  - and point LibVirt to it.
+- Machine: `Q35`
+- Firmware: `BIOS`
+
+Now boot target VM and do this:
+- set root password with `passwd root`
+- start SSH server using: `/etc/init.d/sshd start`
+- now on you local machine I recommend this:
+  ```shell
+  script install.log # log installation to file
+  ssh root@IP_OF_VM
+  ```
+- we will partition disk as GPT to make it dual-bootable under both BIOS and UEFI (in future).
+  This scheme is used by many popular products (Ubuntu server, Proxmox VE, VMware ESXi,...)
+- now we have to partition disk using:
+  ```shell
+  fdisk /dev/vda
+  g # switch partition scheme to GPT
+  n # create new partition
+  default 1 # part number - press ENTER
+  default 2048 # start sector (aligned to 1MB) - press ENTER
+  +2M # size 2MB for BIOS GRUB
+  t # change type
+  BIOS boot # enter exactly that "BIOS boot" with space, without quotes
+  n # new partition - EFI System Partition (ESP)
+  default 2 # ENTER - confirm partition number
+  default 6144 # starting sector - press enter
+  +1g # size
+  t # change type
+  default 2 # ENTER to confirm partition number
+  uefi # EFI ESP partition type, it wil tell 'EFI System'
+  n # new partition (ext4 for root fs)
+  default 3 # part number, press ENTER
+  default 2103296 # start sector, press ENTER
+  +9g # size (keeping free 2gb for swap)
+  n # create new swap partition
+  default 4 # press ENTER
+  default X # press ENTER to confirm start
+  default X # press ENTER to confirm end - should around 2GB
+  t # change type
+  swap # enter "swap" to change type to 'Linux swap'
+  p # print partitions
+  
+  /dev/vda1      2048     6143     4096   2M BIOS boot
+  /dev/vda2      6144  2103295  2097152   1G EFI System
+  /dev/vda3   2103296 20977663 18874368   9G Linux filesystem
+  /dev/vda4  20977664 25163775  4186112   2G Linux swap
+  
+  v # verify partitions
+  w # write partition table to disk
+  ```
+- now format FAT32 ESP partition using:
+  ```shell
+  mkfs.fat -F 32 -N EFI_SYS /dev/vda2
+  ```
+- format ext4 for root filesystem:
+  ```shell
+  mkfs.ext4 -L gentoo-srv-root /dev/vda3
+  ```
+- finally format swap:
+  ```shell
+  mkswap -L gentoo-srv-swap /dev/vda4
+  ```
+- now mount future rootfs and swap:
+  ```shell
+  mount /dev/vda3 /mnt/gentoo/
+  swapon /dev/vda4
+  ```
+
+Now you have to upload root fs tarball - .tar.zst to Gentoo VM, from your local
+machine run command like:
+```shell
+scp gentoo-ROOT-SRV-rootfs-1704555258.tar.zst root@IP_OF_GENTOO_VM:/mnt/gentoo/
+```
+
+Back on Gentoo VM we have to unpack tarball:
+```shell
+cd /mnt/gentoo
+tar xpf gentoo-ROOT-SRV-rootfs-1704555258.tar.zst 
+```
+
+Before entering chroot we have to mount all required filesystems:
+```shell
+mkdir /mnt/gentoo/boot/efi
+mount /dev/vda2 /mnt/gentoo/boot/efi
+mount --types proc /proc /mnt/gentoo/proc
+mount --rbind /sys /mnt/gentoo/sys
+mount --rbind /dev /mnt/gentoo/dev
+```
+
+Now generate proper fstab using:
+```shell
+genfstab -U /mnt/gentoo > /mnt/gentoo/etc/fstab
+```
+
+Finally enter chroot!:
+```shell
+chroot /mnt/gentoo bash
+# now you are in chroot:
+source /etc/profile
+export PS1="(VM ROOT-SRV) ${PS1}"
+grub-install /dev/vda
+grub-mkconfig -o /boot/grub/grub.cfg
+# ensure that BOTH kernel and initrd found
+```
+You are now ready to exit chroot, unmount filesystems, and reboot.
+```shell
+Ctrl-d # exit chroot
+cd / # allow unmounting gentoo fs
+umount -l /mnt/gentoo/dev{/shm,/pts,}
+umount -R /mnt/gentoo
+reboot
+```
+
+And watch your VM console - Target Gentoo system should boot normally.
+
+Target post-configuration:
+If you want to independently build packages also in Target you are finished.
+But if you want to change Target to Consume packages from build server you need to:
+- on Build Server publish `/var/cache/binpkgs/` over http(s) for Targets to download these binaries
+- on Target:
+  - edit `/etc/portage/binrepos.conf/gentoobinhost.conf` and
+    change `sync-uri = ...` to URL of your Build Server with binary packages.
+  - Swap these two lines in `/etc/portage/make.conf` so they look this way:
+    ```shell
+    # Client: do not fetch specified binary packages (use always source)
+    EMERGE_DEFAULT_OPTS="${EMERGE_DEFAULT_OPTS} --usepkg-exclude 'acct-*/* sys-kernel/*-sources virtual/*'"
+    
+    # Server: which Binary packages to NOT build:
+    #EMERGE_DEFAULT_OPTS="${EMERGE_DEFAULT_OPTS} --buildpkg-exclude  'acct-*/* sys-kernel/*-sources virtual/*'"
+    ```
+  - on Target always append `-GK` (to download only binaries from server), or
+    relaxed `-gk` (to download binaries if available, but build otherwise - should be used when
+    excluded packages have to be installed)
+
+
