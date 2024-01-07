@@ -350,4 +350,29 @@ But if you want to change Target to Consume packages from build server you need 
     relaxed `-gk` (to download binaries if available, but build otherwise - should be used when
     excluded packages have to be installed)
 
+# After install
+
+## Configure firewall
+
+We will use simple configuration with nftables. I will combine
+these two sources:
+- https://wiki.gentoo.org/wiki/Nftables
+- https://wiki.archlinux.org/title/nftables
+
+First install packages:
+
+```shell
+emerge -an net-firewall/nftables
+```
+
+Next we need some rules
+- using modified file from https://wiki.archlinux.org/title/nftables
+- copy `THIS_REPO/target/etc/nftables.conf` to your Target's `/etc/`
+- now validate rules with: `nft -cf /etc/nftables.conf`
+- if OK, apply rules: `nft -f /etc/nftables.conf`
+- now you have to Save rules using: `/etc/init.d/nftables save`
+- finally we can enable nftables on startup: `rc-update add nftables default`
+  
+TODO: Configure Syslog-ng rules...
+
 
