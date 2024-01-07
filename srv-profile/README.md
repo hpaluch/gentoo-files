@@ -100,11 +100,15 @@ eselect profile list
 # using:   [1]   default/linux/amd64/17.1 (stable) *
 # Not needed: eselect profile set 1
 
-# I no longer use this, but they may be useful:
+# I no longer use these, but they may be useful:
 emerge -an app-portage/cpuid2cpuflags app-misc/resolve-march-native
 # gentoo provides "euse" and other commands
 emerge -an app-portage/gentoolkit
-emerge --ask --verbose --update --deep --newuse @world
+
+# NOTE: I use --update-if-installed  instead of plain --update to
+# avoid installing inused but updated packages
+emerge --ask --verbose --update-if-installed --deep --newuse @world
+
 # Timezone stuff - UTC recommended for servers
 echo UTC > /etc/timezone
 emerge --config sys-libs/timezone-data
@@ -137,6 +141,11 @@ dracut --kver=`cat /usr/src/linux/include/config/kernel.release`
 
 # boot loader
 emerge -an sys-boot/grub sys-boot/os-prober
+
+# edit /etc/default/grub and:
+# uncomment: GRUB_CMDLINE_LINUX="net.ifnames=0"
+# uncomment: GRUB_TERMINAL=console
+
 # run on target only:
 grub-install /dev/sdX
 # line below requires valid /etc/fstab
@@ -149,10 +158,23 @@ rc-update add dhcpcd default
 rc-update add syslog-ng default
 rc-update add sshd default
 
+# run visudo and:
+# append: Defaults !fqdn
+# uncomment: %wheel ALL=(ALL:ALL) NOPASSWD: ALL
+
 # optional but popular
 emerge -an www-client/lynx sys-fs/ncdu app-portage/gentoolkit app-editors/vim app-misc/mc \
  app-misc/tmux app-admin/sysstat sys-apps/smartmontools \
  app-shells/bash-completion sys-process/lsof
+# install Git so I can track changes in this repo...
+emerge -an dev-vcs/git
+
+# I often move installation around chroot <-> VM <-> bare metal
+# so installing Guest tools (enable on apropriate target only)
+# KVM guest: (excluding vdagent stuff that is for GUI)
+emerge -an app-emulation/qemu-guest-agent
+# only on Target KVM gust run:
+rc-update add qemu-guest-agent default
 
 passwd root
 /usr/sbin/useradd -m -s /bin/bash -G wheel USERNAME
@@ -187,7 +209,8 @@ Now transfer this `.tar.zst` to place from where there will be reachable Target 
 Now create Target VM, I used `virt-manager` (libvirt GUI) with these parameters:
 - CPU: 2 (or more)
 - Memory: 2GB (or more)
-- Disk: 12GB, Virtio BLK (`/dev/vdaX`)
+- Disk: 32GB, Virtio BLK (`/dev/vdaX`)
+  - was 12GB, but some packages are really big (qemu that includes agent around 500MB + 1GB for build!)
 - ISO image:
   - download: http://ftp.linux.cz/pub/linux/gentoo/releases/amd64/autobuilds/current-install-amd64-minimal/install-amd64-minimal-20231231T163203Z.iso
   - and point LibVirt to it.
@@ -224,7 +247,7 @@ Now boot target VM and do this:
   n # new partition (ext4 for root fs)
   default 3 # part number, press ENTER
   default 2103296 # start sector, press ENTER
-  +9g # size (keeping free 2gb for swap)
+  +29g # size (keeping free 2gb for swap)
   n # create new swap partition
   default 4 # press ENTER
   default X # press ENTER to confirm start
@@ -233,10 +256,11 @@ Now boot target VM and do this:
   swap # enter "swap" to change type to 'Linux swap'
   p # print partitions
   
+  Device        Start      End  Sectors Size Type
   /dev/vda1      2048     6143     4096   2M BIOS boot
   /dev/vda2      6144  2103295  2097152   1G EFI System
-  /dev/vda3   2103296 20977663 18874368   9G Linux filesystem
-  /dev/vda4  20977664 25163775  4186112   2G Linux swap
+  /dev/vda3   2103296 62920703 60817408  29G Linux filesystem
+  /dev/vda4  62920704 67106815  4186112   2G Linux swap
   
   v # verify partitions
   w # write partition table to disk
@@ -292,6 +316,7 @@ chroot /mnt/gentoo bash
 source /etc/profile
 export PS1="(VM ROOT-SRV) ${PS1}"
 grub-install /dev/vda
+
 grub-mkconfig -o /boot/grub/grub.cfg
 # ensure that BOTH kernel and initrd found
 ```
