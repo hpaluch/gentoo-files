@@ -3,17 +3,24 @@
 set -eu
 cd `dirname $0`
 
-root=/srv/gentoo/ROOT-SRV
-# expected hostname -f
-e_h=hp-deb4gentoo-srv2
-
-gf=$root/etc/portage/make.conf
+declare -A host2root
+host2root[hp-deb4gentoo-srv2]=/srv/gentoo/ROOT-SRV
+host2root[x2-gentoo-srv.example.com]=/
 
 h=$(hostname -f)
-[ "x$h" = "x$e_h" ] || {
-	echo "Wrong machine: '$h' <> '$e_h'" >&2
+root="${host2root[$h]:-NULL}"
+[ "x$root" != "xNULL" ] || {
+	echo "ERROR: FQDN '$h' not found in associative array 'host2root'" >&2
 	exit 1
 }
+
+echo "Using Gentoo root='$root'"
+[ -d "$root" ] || {
+	echo "ERROR: Invalid root '$root' is not directory" >&2
+	exit 1
+}
+
+gf=$root/etc/portage/make.conf
 
 [ -f "$gf" ] || {
 	echo "ERROR: Gentoo file '$gf' not found or not file" >&2

@@ -352,6 +352,8 @@ But if you want to change Target to Consume packages from build server you need 
 
 # After install
 
+Please see dedicated [ChangeLog.md](ChangeLog.md) for updates and installations.
+
 ## Configure firewall
 
 We will use simple configuration with nftables. I will combine
