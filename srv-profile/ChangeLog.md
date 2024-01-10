@@ -50,4 +50,8 @@
   # you should see list of local binary packages
   lynx http://`hostname -f`/packages/
   ```
+* installed additional commands
+  ```shell
+  emerge -an strace ltrace
+  ```
 
