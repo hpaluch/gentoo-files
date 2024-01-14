@@ -1,0 +1,5 @@
+
+* Globally enable USE `mtp` (to support filesystem access to Android devices over USB)
+* install yt-dlp
+* install keepass
+
