@@ -167,5 +167,12 @@ emerge-webrsync
 # enable USE="mtp" in /etc/portage/make.conf
 # WARNING! gcc removed "nptl" flag - there was no way for me to avoid rebuild....
 emerge --ask --verbose --update-if-installed --deep --newuse @world
+# These packages took most of time (using Azure VM with 4 vCPUs, make -j4):
+# - sys-devel/gcc:     50′34″
+# - sys-devel/llvm:  1:03:13
+# - sys-devel/clang: 1:04:13
+
+# added
+emerge -an app-admin/keepass net-misc/yt-dlp
 
 
