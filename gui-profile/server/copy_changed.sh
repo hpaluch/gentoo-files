@@ -5,7 +5,7 @@ cd `dirname $0`
 
 root=/srv/gentoo/UNI-WL
 # expected hostname -f
-e_h=SERVER_FQDN
+e_h=hp-deb4gentoo-bld2
 
 gf=$root/etc/portage/make.conf
 

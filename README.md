@@ -9,6 +9,24 @@
 * [gui-profile/](gui-profile/) - actively used Desktop profile with X11 (Xfce4) and
   Wayland (Sway) and standard apps (Firefox, Chromium, LibreOffice, virt-manager,...)
 
+## Build Server
+
+Most of time I use host Debian 12 Linux with Gentoo chroot as build server to create
+binary packages. I use one of: Azure VM or spare computer at work. In case of Azure
+I simply install in Host (Debian) Nginx and acquire trusted certificate from Let's
+Encrypt using `certbot`. There is nice guide on:
+- https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-20-04
+- https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-debian-11
+That's is also valid for Debian.
+
+You can find details in:
+- [gui-profile/server/](gui-profile/server/) - build server for my GUI Gentoo installations
+- [srv-profile/buildserver/](srv-profile/buildserver/) - build server for my future "Server" Gentoo
+  installation.
+Please note that in reality both build servers will be single Azure VM instance (chroots) hosted
+on Debian 12 OS.
+
+
 ## Old profiles
 
 They are under [old-gui-profile/](old-gui-profile/)
