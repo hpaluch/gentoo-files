@@ -55,3 +55,37 @@
   emerge -an strace ltrace
   ```
 
+2024-01-15:
+* build host: Azure `Standard E4bds v5 (4 vcpus, 32 GiB memory)`, 32GB RAM, HDD (?)
+* `emerge-webrsync`
+* `emerge --ask --verbose --update-if-installed --deep --newuse @world`
+* 18 packages
+* rebuild of GCC, because flag `nptl` was removed from package.
+* build times from qlop (N=New, U=Update, R=Replace (due USE changes, etc...)):
+  ```
+  qlop -EtH -d today
+
+  N    app-crypt/libmd-1.1.0: 24 seconds
+    U  dev-python/ensurepip-setuptools-69.0.3 [69.0.2]: 4 seconds
+    U  dev-libs/libxml2-2.11.5-r1 [2.11.5]: 35 seconds
+  N    sys-apps/lsb-release-3.2: 4 seconds
+    U  dev-lang/python-3.12.1_p1 [3.12.1]: 2 minutes, 17 seconds
+  N    dev-libs/libbsd-0.11.7-r2: 17 seconds
+  N    app-eselect/eselect-rust-20210703: 7 seconds
+    U  dev-vcs/git-2.43.0 [2.41.0]: 1 minute, 24 seconds
+    U  sys-apps/shadow-4.14.2 [4.13-r4]: 30 seconds
+    U  dev-python/setuptools-69.0.3 [69.0.2-r1]: 8 seconds
+    U  dev-python/jinja-3.1.3 [3.1.2]: 7 seconds
+  
+    # Replaced -j2 with -j4 to use all 4 vCPUs:
+  
+   R   sys-devel/gcc-13.2.1_p20230826: 54 minutes, 31 seconds
+  N    dev-lang/rust-bin-1.74.1: 34 seconds
+  N    virtual/rust-1.74.1: 3 seconds
+    U  sys-block/thin-provisioning-tools-1.0.6 [0.9.0-r2]: 45 seconds
+    U  sys-fs/lvm2-2.03.22-r3 [2.03.21-r1]: 42 seconds
+    U  sys-apps/portage-3.0.61-r1 [3.0.59-r1]: 16 seconds
+    U  www-servers/lighttpd-1.4.72 [1.4.71]: 22 seconds
+  ```
+
+
