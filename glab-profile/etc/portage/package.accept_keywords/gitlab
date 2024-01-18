@@ -1,0 +1,3 @@
+www-apps/gitlab ~amd64
+dev-vcs/gitlab-shell ~amd64
+dev-ruby/rubygems ~amd64

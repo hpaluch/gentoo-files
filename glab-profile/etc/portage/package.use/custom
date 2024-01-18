@@ -1,0 +1,11 @@
+# avoid costly rebuild of gcc
+sys-devel/gcc openmp -zstd
+# avoid NLS for system packages
+app-arch/cpio -nls
+dev-libs/elfutils -nls
+sys-boot/grub -fonts -nls -themes
+# required by sys-boot/os-prober-1.81::gentoo
+# required by sys-boot/os-prober (argument)
+>=sys-boot/grub-2.06-r9 mount
+app-admin/sudo -nls -sendmail -ssl
+app-admin/sysstat -nls
