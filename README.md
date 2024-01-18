@@ -2,6 +2,7 @@
 
 ## Future profiles
 
+* [glab-profile/](glab-profile/) - GitLab profile - Experimental!
 * [srv-profile/](srv-profile/) - my Gentoo profiles for CLI Servers. Work in progress!
 
 ## Current Profiles
@@ -18,6 +19,8 @@ Encrypt using `certbot`. There is nice guide on:
 - https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-20-04
 - https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-debian-11
 That's is also valid for Debian.
+
+See [build-host/](build-host/) for scripts used for build server.
 
 You can find details in:
 - [gui-profile/server/](gui-profile/server/) - build server for my GUI Gentoo installations
