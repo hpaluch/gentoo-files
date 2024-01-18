@@ -111,4 +111,5 @@
   N    sys-power/acpid-2.0.34-r1: 9 seconds
   ```
 - added `emerge -an sys-power/acpid` so "ACPI Shutdown" in VirtualBox works.
+- on target you have to also enable service with `rc-update add acpid default`
   
