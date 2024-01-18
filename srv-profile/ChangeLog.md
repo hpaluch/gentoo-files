@@ -88,4 +88,27 @@
     U  www-servers/lighttpd-1.4.72 [1.4.71]: 22 seconds
   ```
 
+2024-01-18:
+* build host: Azure `Standard E4bds v5 (4 vcpus, 32 GiB memory)`, 32GB RAM, HDD (?)
+* `emerge-webrsync`
+* `emerge --ask --verbose --update-if-installed --deep --newuse @world`
 
+* build times from qlop (N=New, U=Update, R=Replace (due USE changes, etc...)):
+  ```shell
+  qlop -EtH -d today
+   U  sys-libs/libseccomp-2.5.5 [2.5.4]: 19 seconds
+    U  app-misc/ca-certificates-20230311.3.95 [20230311.3.93]: 9 seconds
+    U  sys-apps/coreutils-9.4 [9.3-r3]: 1 minute, 23 seconds
+    U  sys-apps/lsb-release-3.3 [3.2]: 4 seconds
+    U  sys-apps/less-643-r1 [633]: 14 seconds
+    U  app-admin/sudo-1.9.15_p4 [1.9.15_p2]: 39 seconds
+    U  www-servers/lighttpd-1.4.73 [1.4.72]: 24 seconds
+  N    dev-python/sphinxcontrib-jquery-4.1: 5 seconds
+  N    dev-python/sphinx-rtd-theme-2.0.0: 7 seconds
+    U  sys-fs/btrfs-progs-6.6.3 [6.6.2]: 29 seconds
+  D    dev-libs/boost-1.82.0-r1: 2 seconds
+  D    dev-build/b2-4.10.1: 1 second
+  N    sys-power/acpid-2.0.34-r1: 9 seconds
+  ```
+- added `emerge -an sys-power/acpid` so "ACPI Shutdown" in VirtualBox works.
+  
