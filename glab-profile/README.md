@@ -115,7 +115,29 @@ And then tried my `r1` build in debug mode:
 emerge -and =www-apps/gitlab-16.3.7-r1
 ```
 
+Once it fails we can use shortcut (`install` also calls `src_install` where our build fails):
+- Does not work that easy - you have to break `src_install` and backup `workhorse` and `scripts` before
+  they are irrecoverably removed in later stage of install...
+  ```shell
+  # after artfificially inserted:
+     die "Deliberate crash - backup `pwd`/workhorse and `pwd`/scripts"
+  # to src_install() in ebuild 
+  # backed up directories that will be removed
+  tar cvzf /root/gitlab-build-backup.tar.gz \
+     var/tmp/portage/www-apps/gitlab-16.3.7-r1/work/gitlab-16.3.7/workhorse \
+     var/tmp/portage/www-apps/gitlab-16.3.7-r1/work/gitlab-16.3.7/scripts
+  ```
+- after failure you have to restore `scripts` and `workhorse` from backup and only then
+  you can resume install stage using:
 
+```shell
+# restore files that are deleted on later install_src() stage:
+tar xpvzf /root/gitlab-build-backup.tar.gz -C /
+cd / 
+ebuild /var/db/repos/local/www-apps/gitlab/gitlab-16.3.7-r1.ebuild install
+# WARNING! ebuild actually uses /var/tmp/portage/www-apps/gitlab-16.3.7-r1/build-info/gitlab-16.3.7-r1.ebuild
+# somehow - so if you update original ebuild you need to update also that copy...
+```
 
 TODO: Configuration...
 - https://wiki.gentoo.org/wiki/GitLab
