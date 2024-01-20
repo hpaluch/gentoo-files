@@ -85,6 +85,38 @@ Suspecting that nodejs (installed `net-libs/nodejs-20.6.1`) is too fresh. On off
 There is required 18.17.x
 
 
+To diagnoste problems we will creaet local repo
+- following: https://wiki.gentoo.org/wiki/Creating_an_ebuild_repository
+
+```shell
+# in Gentoo (or chroot of gentoo)
+eselect repository create local
+# above command will create /var/db/repo/local
+
+# now copy ...
+
+emerge -an dev-util/pkgdev
+# created /var/db/repos/local/www-apps/gitlab/gitlab-16.3.7-r1.ebuild
+# from  /var/db/repos/gitlab/www-apps/gitlab/gitlab-16.3.7.ebuild
+cd /var/db/repos/local/www-apps/gitlab
+pkgdev manifest
+# Don't be scared that there is no Manifest file created (or is removed)
+# It is because in development mode there is used so-called "thin" manifest.
+pkgcheck scan
+```
+I updated max gitlab version in `/srv/gentoo/AZ-GLAB/etc/portage/package.mask/gitlab` to:
+```
+>www-apps/gitlab-16.4.0
+```
+Also commented out `MAKEOPTS="-jX"` in `/etc/portage/make.conf`
+
+And then tried my `r1` build in debug mode:
+```shell
+emerge -and =www-apps/gitlab-16.3.7-r1
+```
+
+
+
 TODO: Configuration...
 - https://wiki.gentoo.org/wiki/GitLab
 
