@@ -139,6 +139,44 @@ ebuild /var/db/repos/local/www-apps/gitlab/gitlab-16.3.7-r1.ebuild install
 # somehow - so if you update original ebuild you need to update also that copy...
 ```
 
+By adding to `/var/tmp/portage/www-apps/gitlab-16.3.7-r1/work/gitlab-16.3.7/package.json`
+```json
+{
+ scripts: {
+   "webpack": "NODE_OPTIONS=\"--max-old-space-size=5120\" NODE_DEBUG=cluster,net,http,fs,tls,module,timers webpack --config config/webpack.config.js"
+ }
+}
+```
+
+Got more output but still mystery:
+```
+MODULE 10515: Module._load REQUEST @babel/template parent: /var/tmp/portage/www-apps/gitlab-16.3.7-r1/image/opt/gitlab/g
+itlab/node_modules/@babel/helpers/lib/helpers-generated.js                                                              
+MODULE 10515: looking for "@babel/template" in ["/var/tmp/portage/www-apps/gitlab-16.3.7-r1/image/opt/gitlab/gitlab/node
+_modules/@babel/helpers/lib/node_modules","/var/tmp/portage/www-apps/gitlab-16.3.7-r1/image/opt/gitlab/gitlab/node_modul
+es/@babel/helpers/node_modules","/var/tmp/portage/www-apps/gitlab-16.3.7-r1/image/opt/gitlab/gitlab/node_modules/@babel/
+node_modules","/var/tmp/portage/www-apps/gitlab-16.3.7-r1/image/opt/gitlab/gitlab/node_modules","/var/tmp/portage/www-ap
+ps/gitlab-16.3.7-r1/image/opt/gitlab/node_modules","/var/tmp/portage/www-apps/gitlab-16.3.7-r1/image/opt/node_modules","
+/var/tmp/portage/www-apps/gitlab-16.3.7-r1/image/node_modules","/var/tmp/portage/www-apps/gitlab-16.3.7-r1/node_modules"
+,"/var/tmp/portage/www-apps/node_modules","/var/tmp/portage/node_modules","/var/tmp/node_modules","/var/node_modules","/
+node_modules","/var/tmp/portage/www-apps/gitlab-16.3.7-r1/homedir/.node_modules","/var/tmp/portage/www-apps/gitlab-16.3.
+7-r1/homedir/.node_libraries","/usr/lib/node"]                                                                          
+NET 10501: _read                                                                                                        
+undefined:1                                                                                                             
+{"type":"job","id":176,"error":null,"result":{"result":[{"buffer":true,"string":true},{"data":{"version":3,"names":["$",
+"__","isExpanded","sectionArg","section","classList","contains","expandSection","$section","find","text","addClass","has
+Class","one","removeClass","closeSection","toggleSection","initSettingsPanels","each","i","elm","on","window","location"
+,"hash","$target","length","is"],"sources":["/var/tmp/portage/www-apps/gitlab-16.3.7-r1/image/opt/gitlab/gitlab/app/asse
+ts/javascripts/settings_panels.js"],"sourcesContent":["import $ from 'jquery';\nimport { __ } from './locale';\n\n/**\n 
+* Returns true if the given section is expanded or not\n *\n * For legacy consistency, it supports both jQuery and DOM e
+lements\n *\n * @param {jQuery | Element} section\n */\nexport function isExpanded(sectionArg) {\n  const section = sect
+ionArg instanceof $ ? sectionArg[0] : sectionArg;\n\n  return section.classList.contains('expanded');\n}\n\nexport funct
+ion expandSection(sectionArg)
+...
+```
+What is strange, that after "looking for" there should be "load", but there is instead
+"undefined:1"
+
 TODO: Configuration...
 - https://wiki.gentoo.org/wiki/GitLab
 
