@@ -35,7 +35,7 @@ sys-devel/gcc -zstd
 >=sys-boot/grub-2.06-r9 mount
 dev-vcs/git doc
 media-sound/mpg123 -pulseaudio
-media-libs/libsdl2 -pulseaudio
+media-libs/libsdl2 -pulseaudio -haptic
 # required by www-client/firefox-115.6.0::gentoo[system-libvpx]
 # required by www-client/firefox (argument)
 >=media-libs/libvpx-1.13.1-r1 postproc

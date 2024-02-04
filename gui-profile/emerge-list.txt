@@ -175,4 +175,12 @@ emerge --ask --verbose --update-if-installed --deep --newuse @world
 # added
 emerge -an app-admin/keepass net-misc/yt-dlp
 
+# 20240125
+emerge-webrsync
+emerge --ask --verbose --update-if-installed --deep --newuse @world
+# carefully removing old kernel and using new kernel
 
+# clean duplicate binary packages (somehow it needs -d (deep))
+eclean -dp packages
+# review list and then:
+eclean -d packages
