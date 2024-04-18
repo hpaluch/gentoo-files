@@ -1,0 +1,5 @@
+# avoid costly rebuilds
+sys-devel/gcc openmp
+
+# avoid bloat
+sys-boot/grub -fonts -nls -themes

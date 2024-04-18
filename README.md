@@ -26,6 +26,8 @@ You can find details in:
 - [gui-profile/server/](gui-profile/server/) - build server for my GUI Gentoo installations
 - [srv-profile/buildserver/](srv-profile/buildserver/) - build server for my future "Server" Gentoo
   installation.
+- [hard-profile](hard-profile) - Gentoo Hardened - text only, planned server workload
+
 Please note that in reality both build servers will be single Azure VM instance (chroots) hosted
 on Debian 12 OS.
 
