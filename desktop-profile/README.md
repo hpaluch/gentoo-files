@@ -41,3 +41,9 @@ For: `dev-debug/bpftrace` also this options is needed
 See [kernels/linux-6.6.30-gentoo/bpf_defconfig](kernels/linux-6.6.30-gentoo/bpf_defconfig) for
 example with above BPF support.
 
+NOTE: It should be possible to revalidate required kernel CONFIG options with `-p`, e.g.:
+```shell
+emerge -p dev-util/bcc
+emerge -p dev-debug/bpftrace
+```
+
