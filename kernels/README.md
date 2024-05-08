@@ -12,6 +12,14 @@ How to use:
   # my kernels require initrd
   emerge -an sys-kernel/dracut
   ```
+- for automatic kernel install and ramdisk creation do this:
+  ```shell
+  emerge -an sys-boot/grub
+  echo 'sys-kernel/installkernel dracut grub' >> /etc/portage/package.use/installkernel
+  emerge -an sys-kernel/installkernel
+  grub-install /dev/sdX
+  ```
+
 - configure kernel with our `*_defconfig`:
   ```shell
   cd /usr/src/linux
@@ -22,6 +30,9 @@ How to use:
 - now build and install kernel with:
   ```shell
   make -j`nproc` && make modules_install && make install  
+  ```
+- only you you do not use above `installkernel` you need to manually create initramfs with:
+  ```shell
   # rebuild initramfs, use -f if ramdisk file already exists
   dracut --kver=`cat /usr/src/linux/include/config/kernel.release`
   ```
