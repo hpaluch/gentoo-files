@@ -1,0 +1,2 @@
+# required by sys-firmware/nvidia-firmware (argument)
+=sys-firmware/nvidia-firmware-340.32-r1 ~amd64
