@@ -41,9 +41,12 @@ For: `dev-debug/bpftrace` also this options is needed
 See [kernels/linux-6.6.30-gentoo/bpf_defconfig](kernels/linux-6.6.30-gentoo/bpf_defconfig) for
 example with above BPF support.
 
-NOTE: It should be possible to revalidate required kernel CONFIG options with `-p`, e.g.:
+NOTE: It should be possible to revalidate required kernel CONFIG options using
+trick from https://forums.gentoo.org/viewtopic-t-1110538-start-0.html
 ```shell
-emerge -p dev-util/bcc
-emerge -p dev-debug/bpftrace
+ebuild $(equery w dev-util/bcc) setup clean
+ebuild $(equery w dev-debug/bpftrace) setup clean
 ```
+WARNING! `pkg_pretend()` in `*.ebuild` has nothing common with `emerge -p` (emerge pretend). It is
+confusing coincidence...
 
