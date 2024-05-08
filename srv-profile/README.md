@@ -110,10 +110,10 @@ grub-install /dev/sdX
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # tools required for new system
-emerge -an net-misc/dhcpcd app-admin/syslog-ng app-admin/sudo
+emerge -an net-misc/dhcpcd app-admin/rsyslog app-admin/sudo
 
 rc-update add dhcpcd default
-rc-update add syslog-ng default
+rc-update add rsyslog default
 rc-update add sshd default
 
 # run visudo and:
