@@ -20,7 +20,7 @@ emerge -an dev-util/bcc
 dispatch-conf
 emerge -an dev-util/bcc
 
-TODO:
+Required:
  * Messages for package dev-util/bcc-0.29.1-r1:
 
  *   CONFIG_BPF_SYSCALL:         is not set when it should be.
@@ -31,6 +31,11 @@ TODO:
  *   CONFIG_FUNCTION_TRACER:     is not set when it should be.
  * Please check to make sure these options are set correctly.
  * Failure to do so may cause unexpected problems.
+```
+
+For: `dev-debug/bpftrace` also this options is needed
+```
+*   CONFIG_FTRACE_SYSCALLS:     is not set when it should be.
 ```
 
 See [kernels/linux-6.6.30-gentoo/bpf_defconfig](kernels/linux-6.6.30-gentoo/bpf_defconfig) for
