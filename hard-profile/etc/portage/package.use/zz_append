@@ -1,0 +1,18 @@
+# USE flags appended by emerge:
+#
+# required by app-text/texlive-core-2021-r7::gentoo
+# required by dev-texlive/texlive-fontutils-2021::gentoo
+# required by virtual/latex-base-1.0::gentoo
+# required by dev-tex/pgf-3.1.9a::gentoo
+# required by dev-texlive/texlive-pstricks-2021::gentoo
+# required by dev-texlive/texlive-mathscience-2021::gentoo
+# required by dev-texlive/texlive-xetex-2021-r1::gentoo
+# required by dev-texlive/texlive-formatsextra-2021::gentoo
+# required by dev-texlive/texlive-formatsextra (argument)
+>=media-libs/harfbuzz-8.3.0 icu
+# required by dev-texlive/texlive-langczechslovak-2021::gentoo
+# required by dev-texlive/texlive-langczechslovak (argument)
+>=app-text/texlive-core-2021-r7 xetex
+# required by www-servers/nginx-1.25.4-r1::gentoo
+# required by nginx (argument)
+>=app-misc/mime-types-2.1.54 nginx

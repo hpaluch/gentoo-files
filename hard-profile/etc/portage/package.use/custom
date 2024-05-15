@@ -3,3 +3,5 @@ sys-devel/gcc openmp
 
 # avoid bloat
 sys-boot/grub -fonts -nls -themes
+# support LVM:
+sys-fs/lvm2 lvm
