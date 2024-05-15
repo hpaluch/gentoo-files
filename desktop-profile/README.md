@@ -65,7 +65,7 @@ H264_CONSTRAINED_BASELINE      41  8192  2048  2048
 
 If list is empty - there was likely error loading firmware or Xorg driver.
 
-Additionally EGL should start working(!). Output from `inxi -G --display`:
+Additionally EGL should start working, but not yet. Output from `inxi -G --display`:
 
 ```
 Graphics:
@@ -78,6 +78,30 @@ Graphics:
   API: OpenGL v: 3.3 vendor: mesa v: 24.0.4 renderer: NVA8
   API: Vulkan Message: No Vulkan data available.
 ```
+
+When I start `mpv -vo=gpu ~/Videos/VIDEO.mp4` there is still error:
+```
+libEGL warning: failed to get driver name for fd -1
+libEGL warning: MESA-LOADER: failed to retrieve device information
+libEGL warning: failed to get driver name for fd -1
+```
+But there is promising answer on:
+https://stackoverflow.com/questions/72110384/libgl-error-mesa-loader-failed-to-open-iris
+- suggesting to try older "mesa-amber". On Gentoo:
+
+```shell
+emerge -an media-libs/mesa-amber
+```
+
+It helped! Errors is gone and CPU load dropped to each-core: 25% (from 75%). Please note that
+this acceleration stops working in full-screen mode (when you press `F`) for some reason.
+
+What is strange, that `inxi -G --display` reports `EGL: no data available` - I think that is is because
+only older APIs are supported...
+
+WARNING! It has opposite effect on real Arch-Linux (graphics will be slow to crawl) - because Arch
+Linux does not allow coexistence of new Mesa and Mesa-amber (we need 3D graphics support for Window Manager
+but older Mesa for video playback...)
 
 # Others
 
