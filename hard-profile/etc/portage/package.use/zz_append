@@ -1,5 +1,5 @@
-# USE flags appended by emerge:
-#
+# package pinning added by emerge
+
 # required by app-text/texlive-core-2021-r7::gentoo
 # required by dev-texlive/texlive-fontutils-2021::gentoo
 # required by virtual/latex-base-1.0::gentoo
@@ -16,3 +16,6 @@
 # required by www-servers/nginx-1.25.4-r1::gentoo
 # required by nginx (argument)
 >=app-misc/mime-types-2.1.54 nginx
+# required by media-gfx/graphviz-9.0.0::gentoo
+# required by media-gfx/graphviz (argument)
+>=media-libs/gd-2.3.3-r4 truetype fontconfig
