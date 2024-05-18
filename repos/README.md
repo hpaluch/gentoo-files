@@ -25,4 +25,8 @@ henrykrepo` and added `auto-sync = false` to
 `/var/db/repos/henrykrepo/metadata/layout.conf`
 
 
+# Resources
+
+* https://wiki.gentoo.org/wiki/Handbook:AMD64/Portage/CustomTree
+* https://wiki.gentoo.org/wiki/Basic_guide_to_write_Gentoo_Ebuilds
 
