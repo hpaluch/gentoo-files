@@ -3,6 +3,7 @@ app-admin/rsyslog
 app-admin/sudo
 app-admin/sysstat
 app-editors/vim
+app-eselect/eselect-repository
 app-misc/mc
 app-misc/resolve-march-native
 app-misc/tmux

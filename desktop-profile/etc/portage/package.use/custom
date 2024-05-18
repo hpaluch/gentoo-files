@@ -4,7 +4,7 @@ app-arch/cpio  -nls
 app-editors/vim -X -acl -crypt -sound
 # required for Wayland
 sys-auth/seatd server
-www-client/firefox openh264
+www-client/firefox openh264 system-png
 
 sys-devel/gettext -openmp
 app-crypt/libb2 -openmp
@@ -18,18 +18,7 @@ dev-vcs/git doc
 www-client/chromium widevine
 
 media-libs/libcanberra pulseaudio
-# required by xfce-base/xfce4-panel-4.18.6::gentoo[dbusmenu]
-# required by xfce-extra/xfce4-notifyd-0.9.4::gentoo
-# required by virtual/notification-daemon-0::gentoo[-gnome,-kde]
-# required by x11-libs/libnotify-0.8.3::gentoo
->=dev-libs/libdbusmenu-16.04.0-r2 gtk3
 gnome-base/gvfs blueray fuse samba gphoto2
 
 media-plugins/mpg123-output-plugins -haptic -sdl
 media-sound/mpg123 -haptic -sdl
-# required by www-client/firefox-115.10.0::gentoo[system-libvpx]
-# required by www-client/firefox (argument)
->=media-libs/libvpx-1.13.1-r1 postproc
-# required by dev-util/bcc-0.29.1-r1::gentoo
-# required by dev-util/bcc (argument)
->=dev-libs/libbpf-1.3.0 static-libs
