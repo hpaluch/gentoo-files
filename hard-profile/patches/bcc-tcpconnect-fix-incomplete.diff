@@ -1,0 +1,29 @@
+--- usr/share/bcc/tools/tcpconnect.orig	2024-05-18 12:23:25.600000000 +0000
++++ usr/share/bcc/tools/tcpconnect	2024-05-18 12:42:15.532000000 +0000
+@@ -295,7 +295,7 @@
+         return 0;
+ 
+     struct msghdr *msghdr = (struct msghdr *)*msgpp;
+-    if (msghdr->msg_iter.TYPE_FIELD != ITER_IOVEC)
++    if (!iter_is_iovec(&msghdr->msg_iter))
+         goto delete_and_return;
+ 
+     int copied = (int)PT_REGS_RC(ctx);
+@@ -303,7 +303,7 @@
+         goto delete_and_return;
+     size_t buflen = (size_t)copied;
+ 
+-    if (buflen > msghdr->msg_iter.iov->iov_len)
++    if (buflen > iter_iov_len(&msghdr->msg_iter))
+         goto delete_and_return;
+ 
+     if (buflen > MAX_PKT)
+@@ -313,7 +313,7 @@
+     if (!data) // this should never happen, just making the verifier happy
+         return 0;
+ 
+-    void *iovbase = msghdr->msg_iter.iov->iov_base;
++    void *iovbase = iter_iov_addr(&msghdr->msg_iter);
+     bpf_probe_read(data->pkt, buflen, iovbase);
+     dns_events.perf_submit(ctx, data, buflen);
+ 
