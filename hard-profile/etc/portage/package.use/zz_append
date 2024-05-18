@@ -19,3 +19,6 @@
 # required by media-gfx/graphviz-9.0.0::gentoo
 # required by media-gfx/graphviz (argument)
 >=media-libs/gd-2.3.3-r4 truetype fontconfig
+# required by dev-util/bcc-0.29.1-r1::gentoo
+# required by dev-util/bcc (argument)
+>=dev-libs/libbpf-1.3.0 static-libs

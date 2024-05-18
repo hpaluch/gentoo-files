@@ -5,6 +5,7 @@ app-admin/sysstat
 app-editors/nano
 app-editors/vim
 app-emulation/qemu-guest-agent
+app-forensics/yara
 app-misc/mc
 app-misc/resolve-march-native
 app-misc/tmux
@@ -12,12 +13,15 @@ app-portage/cpuid2cpuflags
 app-portage/gentoolkit
 app-shells/bash-completion
 app-text/pinfo
+dev-debug/bpftrace
 dev-debug/ltrace
 dev-debug/strace
 dev-python/bcrypt
+dev-python/cachetools
 dev-python/django
 dev-python/mysqlclient
 dev-python/pillow
+dev-python/pip
 dev-python/psycopg
 dev-tex/latexmk
 dev-texlive/texlive-formatsextra
@@ -28,7 +32,9 @@ dev-texlive/texlive-mathscience
 dev-texlive/texlive-metapost
 dev-texlive/texlive-publishers
 dev-texlive/texlive-xetex
+dev-util/bcc
 dev-vcs/git-lfs
+dev-vcs/subversion
 mail-mta/postfix
 media-gfx/graphviz
 media-gfx/imagemagick
