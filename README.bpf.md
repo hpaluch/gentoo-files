@@ -53,18 +53,13 @@ Cachetools is there:
 emerge -an dev-python/cachetools
 ```
 
-Trying with venv:
-```shell
-python -m venv --system-site-packages ~/venvdnslib
-bash
-source ~/venvdnslib/bin/activate
-pip install dnslib
-exit # exitvevn
-sudo bash
-source /home/user/venvdnslib/bin/activate
+Now you can try my own repository which contains ebuild for `dnslib`.
+Read [repos/README.md](repos/README.md) for instructions.
+
+Then try as root:
+```
 /usr/share/bcc/tools/tcpconnect -tdU
 
-(venvdnslib) gentoo-hard-23 /home/user # /usr/share/bcc/tools/tcpconnect -tdU
 libbpf: failed to find valid kernel BTF
 /virtual/main.c:190:26: error: no member named 'type' in 'struct iov_iter'
   190 |     if (msghdr->msg_iter.type != ITER_IOVEC)
@@ -87,8 +82,28 @@ Exception: Failed to compile BPF module <text>
 Above "virtual/main.c" corresponds to actual code in `/usr/share/bcc/tools/tcpconnect` but
 line numbers are different.
 
-I fixed above errors in this patch:
-- [hard-profile/patches/bcc-tcpconnect-fix-incomplete.diff](hard-profile/patches/bcc-tcpconnect-fix-incomplete.diff)
-But lot of other errors occurred then...
+Recommended workaround:
+- look into `/var/db/repos/gentoo/sys-kernel/gentoo-sources/` to see oldest series of kernel
+- now we can try to install for example latest and UNMASKED version of 5.10 series with:
+  ```shell
+  $ emerge -an '<sys-kernel/gentoo-sources-5.11'
+
+  [ebuild  NS    ] sys-kernel/gentoo-sources-5.10.216 [6.6.30]
+  ```
+- so 5.10.216 looks fine  and it will run above program without error!
+- see [kernels/linux-5.10.216-gentoo/hardbpf_defconfig](kernels/linux-5.10.216-gentoo/hardbpf_defconfig)
+  for my kernel config
+
+
+For brave souls (not finished):
+
+> I fixed above errors in this patch:
+> - [hard-profile/patches/bcc-tcpconnect-fix-incomplete.diff](hard-profile/patches/bcc-tcpconnect-fix-incomplete.diff)
+> But lot of other errors occurred then...
+> 
+> Unfortunately Linux kernel structures change extremely fast. Here is patch for kernel 5.14
+> - https://github.com/iovisor/bcc/pull/3860/files
+> that again is obsolete (there are other parts of `tcpconnect` that will not build when using
+> current kernel `sys-kernel/gentoo-sources-6.6.30`)
 
 
