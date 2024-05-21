@@ -4,9 +4,8 @@ set -eu
 cd `dirname $0`
 
 declare -A host2root
-#host2root[hp-deb4gentoo-srv2]=/srv/gentoo/ROOT-SRV
 host2root[hp-deb4gentoo-bld2]=/srv/gentoo/UNI-DTP
-#host2root[x2-gentoo-srv.example.com]=/
+host2root[gentoo-dtp.example.com]=/
 
 h=$(hostname -f)
 root="${host2root[$h]:-NULL}"

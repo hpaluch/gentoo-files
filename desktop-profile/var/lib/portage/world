@@ -13,6 +13,8 @@ app-shells/bash-completion
 app-text/evince
 app-text/pinfo
 dev-debug/bpftrace
+dev-python/cachetools
+dev-python/dnslib
 dev-util/bcc
 dev-util/geany
 dev-util/vulkan-tools
