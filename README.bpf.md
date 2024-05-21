@@ -93,7 +93,7 @@ Recommended workaround:
 - so 5.10.216 looks fine  and it will run above program without error!
 - see [kernels/linux-5.10.216-gentoo/hardbpf_defconfig](kernels/linux-5.10.216-gentoo/hardbpf_defconfig)
   for my kernel config
-
+- or, in case of "desktop-profile" [desktop-profile/usr/src/linux-5.10.216-gentoo/arch/x86/configs/bpf_defconfig](desktop-profile/usr/src/linux-5.10.216-gentoo/arch/x86/configs/bpf_defconfig)
 
 For brave souls (not finished):
 

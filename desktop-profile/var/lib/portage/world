@@ -23,7 +23,7 @@ media-fonts/liberation-fonts
 media-fonts/terminus-font
 media-gfx/gthumb
 media-gfx/imagemagick
-media-libs/mesa-amber
+media-libs/mesa
 media-sound/alsa-utils
 media-sound/audacious
 media-sound/mpg123
@@ -46,6 +46,7 @@ sys-kernel/linux-firmware
 sys-process/cronie
 sys-process/lsof
 www-client/firefox
+www-client/lynx
 x11-apps/mesa-progs
 x11-apps/xdpyinfo
 x11-apps/xdriinfo
@@ -56,6 +57,7 @@ x11-apps/xvinfo
 x11-base/xorg-server
 x11-misc/vdpauinfo
 x11-misc/wmctrl
+x11-terms/kitty
 x11-terms/xterm
 xfce-base/xfce4-meta
 xfce-extra/xfce4-cpugraph-plugin
