@@ -7,6 +7,9 @@
 
 ## Current Profiles
 
+* Feb 2025: [gui-plasma/](gui-plasma/) - KDE Plasma/Wayland (tested on KVM VM, planned copy
+  on old AMD X2 machine.
+
 * [gui-profile/](gui-profile/) - actively used Desktop profile with X11 (Xfce4) and
   Wayland (Sway) and standard apps (Firefox, Chromium, LibreOffice, virt-manager,...)
 
