@@ -31,11 +31,11 @@ curl -fLO https://ftp.linux.cz/pub/linux/gentoo/releases/amd64/autobuilds/curren
 cd ROOT-SRV
 tar xpvf ../stage3-*.tar.xz --xattrs-include='*.*' --numeric-owner
 # If you are using Azure VM with temporary disk under /mnt you can do this:
-sudo umount /mnt 
+sudo umount /mnt
 sudo mount /dev/disk/cloud/azure_resource-part1 /srv/gentoo/ROOT-SRV/var/tmp
 # WARNING! Do not modify /etc/fstab - cloud-init will overwrite it on boot...
 
-# recommended - mount /srv/gentoo/ROOT-SRV/var/tmp/ on fast disk 
+# recommended - mount /srv/gentoo/ROOT-SRV/var/tmp/ on fast disk
 cd /srv/gentoo/ROOT-SRV
 # NOTE: prepated etc/make.conf
 cp -L /etc/resolv.conf etc/
@@ -96,10 +96,17 @@ cd /usr/src/linux
 cp /THIS_REPO/kernels/srv_defconfig /usr/src/linux/arch/x86/configs
 make srv_defconfig
 make menuconfig
-make -j`nproc` && make modules_install && make install  
+make -j`nproc` && make modules_install && make install
+### got weird crash:
+###  scripts/link-vmlinux.sh: line 175: 137890 Aborted                 ${objtree}/scripts/sorttable ${1}
+### Failed to sort kernel tables
+### Workaround: commencted out call to sortable in scripts/link-vmlinux.sh
+
+
 dracut --kver=`cat /usr/src/linux/include/config/kernel.release`
 
 # boot loader
+# WARNING! os-prober or grub with "device-mapper" has dependency on llvm bloat
 emerge -an sys-boot/grub sys-boot/os-prober
 
 # edit /etc/default/grub and:
@@ -252,7 +259,7 @@ scp gentoo-ROOT-SRV-rootfs-1704555258.tar.zst root@IP_OF_GENTOO_VM:/mnt/gentoo/
 Back on Gentoo VM we have to unpack tarball:
 ```shell
 cd /mnt/gentoo
-tar xpf gentoo-ROOT-SRV-rootfs-1704555258.tar.zst 
+tar xpf gentoo-ROOT-SRV-rootfs-1704555258.tar.zst
 ```
 
 Before entering chroot we have to mount all required filesystems:
@@ -334,7 +341,7 @@ Next we need some rules
 - if OK, apply rules: `nft -f /etc/nftables.conf`
 - now you have to Save rules using: `/etc/init.d/nftables save`
 - finally we can enable nftables on startup: `rc-update add nftables default`
-  
+
 TODO: Configure Syslog-ng rules...
 
 

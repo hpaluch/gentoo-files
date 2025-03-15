@@ -4,6 +4,7 @@ set -eu
 cd `dirname $0`
 
 declare -A host2root
+host2root[hp-deb4gentoo3]=/srv/gentoo/CROSS-RPI
 host2root[hp-deb4gentoo-srv2]=/srv/gentoo/ROOT-SRV
 host2root[x2-gentoo-srv.example.com]=/
 

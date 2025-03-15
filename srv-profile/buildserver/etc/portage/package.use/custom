@@ -1,11 +1,13 @@
 # avoid costly rebuild of gcc
-sys-devel/gcc openmp -zstd
+sys-devel/gcc openmp
 # avoid NLS for system packages
 app-arch/cpio -nls
 dev-libs/elfutils -nls
-sys-boot/grub -fonts -nls -themes
-# required by sys-boot/os-prober-1.81::gentoo
-# required by sys-boot/os-prober (argument)
->=sys-boot/grub-2.06-r9 mount
+# WARNING1 device-mapper has deps on llvm beast
+sys-boot/grub -fonts -nls -themes -device-mapper
 app-admin/sudo -nls -sendmail -ssl
 app-admin/sysstat -nls
+
+# break circular deps: https://forums.gentoo.org/viewtopic-p-8856551.html?sid=c29965501f1c4871f54afb6f745fd2e2
+net-misc/curl -http2 -http3 -quic -curl_quic_openssl
+

@@ -1,0 +1,16 @@
+# See https://wiki.gentoo.org/wiki/Embedded_Handbook/General/Compiling_with_QEMU_user_chroot
+# Enable static-user and add the aarch64 and arm target
+app-emulation/qemu static-user QEMU_SOFTMMU_TARGETS: x86_64 i386 aarch64 arm QEMU_USER_TARGETS: x86_64 i386 aarch64 arm
+# required by app-emulation/qemu::gentoo[static,static-user]
+# required by qemu (argument)
+dev-libs/glib static-libs
+# required by app-emulation/qemu::gentoo[-static,static-user]
+# required by qemu (argument)
+sys-libs/zlib static-libs
+# required by app-emulation/qemu::gentoo[-static,static-user,xattr]
+# required by qemu (argument)
+sys-apps/attr static-libs
+# required by dev-libs/glib::gentoo
+# required by app-emulation/qemu::gentoo[-static,static-user]
+# required by qemu (argument)
+dev-libs/libpcre2 static-libs
