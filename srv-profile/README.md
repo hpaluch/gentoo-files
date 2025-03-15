@@ -27,7 +27,7 @@ sudo apt-get dist-upgrade
 sudo apt-get install curl tmux vim jq mc lynx git
 mkdir -p /srv/gentoo/ROOT-SRV
 cd /srv/gentoo
-curl -fLO http://ftp.linux.cz/pub/linux/gentoo/releases/amd64/autobuilds/current-stage3-amd64-openrc/stage3-amd64-openrc-20231231T163203Z.tar.xz
+curl -fLO https://ftp.linux.cz/pub/linux/gentoo/releases/amd64/autobuilds/current-stage3-amd64-openrc/stage3-amd64-openrc-20250309T170330Z.tar.xz
 cd ROOT-SRV
 tar xpvf ../stage3-*.tar.xz --xattrs-include='*.*' --numeric-owner
 # If you are using Azure VM with temporary disk under /mnt you can do this:
@@ -55,8 +55,10 @@ In chroot:
 ```shell
 emerge-webrsync
 eselect profile list
-# using:   [1]   default/linux/amd64/17.1 (stable) *
-# Not needed: eselect profile set 1
+# eselect profile list | fgrep '*'
+#  [21]  default/linux/amd64/23.0 (stable) *
+# no need for change 23.0 = year 2023 revision 0
+
 
 # I no longer use these, but they may be useful:
 emerge -an app-portage/cpuid2cpuflags app-misc/resolve-march-native
