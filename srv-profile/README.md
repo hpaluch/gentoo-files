@@ -342,6 +342,32 @@ Next we need some rules
 - now you have to Save rules using: `/etc/init.d/nftables save`
 - finally we can enable nftables on startup: `rc-update add nftables default`
 
-TODO: Configure Syslog-ng rules...
+# RSyslog
 
+First:
+```shell
+emerge -an app-admin/rsyslog
+rc-update add rsyslog default
+cp vm/etc/rsyslog.d/ /etc/rsyslog.d/
+/etc/init.d/rsyslog start
+```
+
+# Enabling audit
+
+Following:
+- https://github.com/hpaluch/hpaluch.github.io/wiki/Audit
+- https://wiki.gentoo.org/wiki/Audit
+
+```shell
+# do only once:
+emerge -an sys-process/audit
+cp vm/etc/audit/rules.d/*.rules /etc/audit/rules.d/
+cp vm/usr/local/bin/*.sh /usr/local/bin
+rc-update add auditd default
+/etc/init.d/auditd start
+
+# after all rules change:
+augenrules --load
+auditctl -l
+```
 
