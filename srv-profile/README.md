@@ -69,9 +69,10 @@ emerge -an app-portage/gentoolkit
 # avoid installing inused but updated packages
 emerge --ask --verbose --update-if-installed --deep --newuse @world
 
-# Timezone stuff - UTC recommended for servers
-echo UTC > /etc/timezone
+# Timezone stuff
+cd /etc && ln -sf ../usr/share/zoneinfo/Europe/Prague /etc/localtime
 emerge --config sys-libs/timezone-data
+date # must show CET/CEST
 # Locales:
 # copy buildserver/etc/locale.gen to chroot
 # and run:
@@ -91,6 +92,24 @@ eselect kernel set 1
 emerge -an sys-apps/pciutils sys-kernel/dracut \
   sys-fs/btrfs-progs sys-fs/lvm2 sys-fs/squashfs-tools
 
+# boot loader
+# WARNING! os-prober or grub with "device-mapper" has dependency on llvm bloat
+emerge -an sys-boot/grub sys-boot/os-prober
+
+# edit /etc/default/grub and:
+# uncomment: GRUB_CMDLINE_LINUX="net.ifnames=0"
+# uncomment: GRUB_TERMINAL=console
+
+# run on target OUTSIDE CHROOT:
+genfstab -U /mnt/gentoo/ >> /mnt/gentoo/etc/fstab
+
+# run on target only:
+grub-install /dev/sdX
+
+# on real target (NOT CHROOT!) you can do:
+echo 'sys-kernel/installkernel dracut grub' > /etc/portage/package.use/installkernel
+emerge -an sys-kernel/installkernel
+
 # building kernel sources
 cd /usr/src/linux
 cp /THIS_REPO/kernels/srv_defconfig /usr/src/linux/arch/x86/configs
@@ -105,21 +124,12 @@ make -j`nproc` && make modules_install && make install
 
 dracut --kver=`cat /usr/src/linux/include/config/kernel.release`
 
-# boot loader
-# WARNING! os-prober or grub with "device-mapper" has dependency on llvm bloat
-emerge -an sys-boot/grub sys-boot/os-prober
-
-# edit /etc/default/grub and:
-# uncomment: GRUB_CMDLINE_LINUX="net.ifnames=0"
-# uncomment: GRUB_TERMINAL=console
-
-# run on target only:
-grub-install /dev/sdX
 # line below requires valid /etc/fstab
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # tools required for new system
 emerge -an net-misc/dhcpcd app-admin/rsyslog app-admin/sudo
+cp vm/etc/rsyslog.d/* /etc/rsyslog.d/
 
 rc-update add dhcpcd default
 rc-update add rsyslog default
