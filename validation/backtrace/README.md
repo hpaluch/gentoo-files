@@ -63,5 +63,6 @@ Yup! Bu I don't now what is the cause (yet)....
 I'm trying to build gcc and glibc with debug + source as described on:
 - https://wiki.gentoo.org/wiki/Debugging
 
-
+Reported here (no resolution yet):
+- https://bugs.gentoo.org/955635
 
