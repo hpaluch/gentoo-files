@@ -66,3 +66,13 @@ I'm trying to build gcc and glibc with debug + source as described on:
 Reported here (no resolution yet):
 - https://bugs.gentoo.org/955635
 
+On clean system:
+- worked until rebuild of glibc:
+
+```shell
+emerge -av1  sys-devel/binutils # ok
+emerge -a1v sys-devel/gcc       # ok
+emerge -a1v sys-libs/glibc      # crashes
+```
+
+

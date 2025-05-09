@@ -1,5 +1,16 @@
 # Gentoo Files
 
+> [!WARNING]
+>
+> In the past I used gcc parameter `-fno-strict-aliasing` to _avoid_ pointer aliasing
+> bugs but it turned to do opposite: it causes crash in glibc backtrace(3) call and
+> possible other bugs.
+>
+> If you used it - remove it immediately from `/etc/portage/make.conf` and rebuild
+> glibc with `emerge -a1v sys-libs/glibc`.
+>
+> See also https://bugs.gentoo.org/955635
+
 ## Future profiles
 
 * [glab-profile/](glab-profile/) - GitLab profile - Experimental!
