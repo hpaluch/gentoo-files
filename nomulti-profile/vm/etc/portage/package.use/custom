@@ -1,0 +1,5 @@
+# avoid costly rebuild of gcc just because it uses openmp
+sys-devel/gcc openmp
+app-arch/cpio -nls
+sys-boot/grub -fonts -nls -themes
+app-editors/emacs -X -xpm

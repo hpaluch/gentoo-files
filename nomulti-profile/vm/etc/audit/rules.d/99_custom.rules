@@ -1,0 +1,29 @@
+# see https://github.com/hpaluch/hpaluch.github.io/wiki/Audit
+# audit all connect(2) calls with exception of Unix socket family
+-a always,exit -F arch=b64 -S connect  -F saddr_fam!=1 -k hp_sock1
+-a always,exit -F arch=b32 -S connect  -F saddr_fam!=1 -k hp_sock1
+# watch (w)rite and (a)ttribute changes
+# partially based on: https://documentation.suse.com/en-us/sles/15-SP6/html/SLES-all/cha-audit-comp.html
+# watch /etc/ directory write access or attr modification:
+# old format: -w /etc -p wa -k hp_etc3
+-a always,exit -F arch=b64 -F path=/etc -F perm=wa -F key=hp_etc3
+-a always,exit -F arch=b32 -F path=/etc -F perm=wa -F key=hp_etc3
+# old format: -w /etc/passwd -k hp_passwd3 -p wxa
+-a always,exit -F arch=b64 -F path=/etc/passwd -F perm=wxa -F key=hp_passwd3
+-a always,exit -F arch=b32 -F path=/etc/passwd -F perm=wxa -F key=hp_passwd3
+# old format: -w /etc/group -k hp_group3 -p wxa
+-a always,exit -F arch=b64 -F path=/etc/group -F perm=wxa -F key=hp_group3
+-a always,exit -F arch=b32 -F path=/etc/group -F perm=wxa -F key=hp_group3
+# old format: -w /etc/shadow -k hp_shadow3 -p wxa
+-a always,exit -F arch=b64 -F path=/etc/shadow -F perm=wxa -F key=hp_shadow3
+-a always,exit -F arch=b32 -F path=/etc/shadow -F perm=wxa -F key=hp_shadow3
+# from /usr/share/audit-rules/30-ospp-v42-1-create-failed.rules
+### 10.2.5.b All elevation of privileges is logged
+-a always,exit -F arch=b64 -S setuid -F a0=0 -F exe=/usr/bin/su -F key=10.2.5.b-elevated-privs-session
+-a always,exit -F arch=b32 -S setuid -F a0=0 -F exe=/usr/bin/su -F key=10.2.5.b-elevated-privs-session
+-a always,exit -F arch=b64 -S setresuid -F a0=0 -F exe=/usr/bin/sudo -F key=10.2.5.b-elevated-privs-session
+-a always,exit -F arch=b32 -S setresuid -F a0=0 -F exe=/usr/bin/sudo -F key=10.2.5.b-elevated-privs-session
+-a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -F key=10.2.5.b-elevated-privs-setuid
+-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -F key=10.2.5.b-elevated-privs-setuid
+
+
