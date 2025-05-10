@@ -1,3 +1,2 @@
 app-arch/cpio -nls
 kde-plasma/plasma-meta -bluetooth -browser-integration -crash-handler -cups
-

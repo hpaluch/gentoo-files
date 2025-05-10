@@ -1,0 +1,12 @@
+app-emulation/qemu capstone fuse sdl-image spice static-user vte zstd virgl virtfs
+# lines below: required by QEMU static-user:
+dev-libs/glib static-libs
+sys-libs/zlib static-libs
+sys-apps/attr static-libs
+dev-libs/libpcre2 static-libs
+media-libs/virglrenderer static-libs
+# NOTE: wrappers scripts from https://github.com/mm1ke/qemu-init
+# require: app-emulation/qemu net-misc/bridge-utils net-analyzer/openbsd-netcat sys-apps/iproute
+
+media-libs/gst-plugins-base gbm
+app-emulation/spice gstreamer lz4
