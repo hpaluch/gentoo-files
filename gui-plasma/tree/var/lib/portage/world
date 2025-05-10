@@ -11,6 +11,13 @@ app-misc/wayland-utils
 app-portage/gentoolkit
 app-shells/bash-completion
 dev-vcs/git
+gui-apps/foot
+gui-apps/mako
+gui-apps/swaybg
+gui-apps/swayidle
+gui-apps/swaylock
+gui-apps/wofi
+gui-wm/sway
 kde-apps/dolphin
 kde-apps/filelight
 kde-apps/konsole
@@ -37,3 +44,11 @@ www-client/firefox-bin
 x11-apps/mesa-progs
 x11-apps/xrandr
 x11-base/xorg-fonts
+x11-misc/dmenu
+x11-terms/alacritty
+xfce-base/xfce4-meta
+xfce-base/xfce4-session
+xfce-extra/xfce4-cpugraph-plugin
+xfce-extra/xfce4-diskperf-plugin
+xfce-extra/xfce4-netload-plugin
+xfce-extra/xfce4-pulseaudio-plugin

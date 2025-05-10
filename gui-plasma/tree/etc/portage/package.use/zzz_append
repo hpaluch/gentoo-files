@@ -20,3 +20,7 @@
 # required by kde-plasma/plasma-meta-6.2.5::gentoo
 # required by kde-plasma/plasma-meta (argument)
 >=dev-qt/qtbase-6.8.1 cups
+# required by xfce-base/xfce4-panel-4.20.0::gentoo[dbusmenu]
+# required by xfce-extra/xfce4-cpugraph-plugin-1.2.11::gentoo
+# required by xfce-extra/xfce4-cpugraph-plugin (argument)
+>=dev-libs/libdbusmenu-16.04.0-r2 gtk3
