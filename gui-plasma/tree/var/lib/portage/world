@@ -29,6 +29,7 @@ media-fonts/terminus-font
 media-plugins/gst-plugins-libav
 media-plugins/gst-plugins-vpx
 media-plugins/gst-plugins-x264
+media-sound/pavucontrol
 media-sound/qmmp
 media-video/smplayer
 net-analyzer/openbsd-netcat
