@@ -1,0 +1,20 @@
+# avoid costly rebuilds
+llvm-core/clang-runtime openmp
+sys-devel/gcc fortran openmp
+
+# Custom USE flags per app
+app-text/ghostscript-gpl -dbus
+app-arch/cpio  -nls
+app-editors/vim -X -acl -crypt -sound
+
+# required to install sway/wayland
+>=gui-apps/swaybg-1.2.0 gdk-pixbuf
+# required for Wayland
+sys-auth/seatd server
+www-client/firefox pulseaudio openh264
+
+sys-boot/grub libzfs
+sys-kernel/installkernel dracut grub
+dev-vcs/git doc
+media-libs/libcanberra pulseaudio
+gnome-base/gvfs blueray fuse samba gphoto2

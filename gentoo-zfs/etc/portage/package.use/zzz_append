@@ -1,0 +1,13 @@
+# required by xfce-base/xfce4-panel-4.20.4::gentoo[dbusmenu]
+# required by xfce-extra/xfce4-notifyd-0.9.7::gentoo
+# required by virtual/notification-daemon-0::gentoo[-kde,-gnome]
+# required by x11-libs/libnotify-0.8.3::gentoo
+>=dev-libs/libdbusmenu-16.04.0-r3 gtk3
+# required by media-sound/pulseaudio-daemon-17.0-r1::gentoo[alsa-plugin,alsa]
+# required by media-libs/libpulse-17.0::gentoo
+# required by media-libs/libcanberra-0.30-r8::gentoo[pulseaudio]
+# required by media-libs/libcanberra-gtk3-0.30::gentoo
+# required by xfce-extra/xfce4-notifyd-0.9.7::gentoo[sound]
+# required by virtual/notification-daemon-0::gentoo[-kde,-gnome]
+# required by x11-libs/libnotify-0.8.3::gentoo
+>=media-plugins/alsa-plugins-1.2.12 pulseaudio

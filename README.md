@@ -13,6 +13,7 @@
 
 ## Future profiles
 
+* [gentoo-zfs/](gentoo-zfs) - Gentoo installed on ZFS with XFCE DE
 * [glab-profile/](glab-profile/) - GitLab profile - Experimental!
 * [srv-profile/](srv-profile/) - my Gentoo profiles for CLI Servers. Work in progress!
 * [nomulti-profile/](nomulti-profile/) - no multilib (64-bit only) profile - Work  in progress!
