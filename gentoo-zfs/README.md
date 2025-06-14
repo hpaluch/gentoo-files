@@ -77,3 +77,100 @@ Calling ioctl() to re-read partition table.
 Syncing disks.
 ```
 
+Next prepare empty EFI (don't used on my setup):
+```shell
+mkfs.vfat -n GENTOO_EFI /dev/vda2
+```
+
+ZFS setup (from Wiki):
+```shell
+zpool create -f -o ashift=12 -o autotrim=on  -o compatibility=openzfs-2.1-linux \
+	-O acltype=posixacl  -O xattr=sa  -O relatime=on  -O compression=lz4 \
+	-m none tank /dev/vda3
+zfs create -o mountpoint=none tank/os
+zfs create -o mountpoint=/ -o canmount=noauto tank/os/gentoo
+zfs create -o mountpoint=/home tank/home
+zpool set bootfs=tank/os/gentoo tank
+zpool export tank
+zpool import -N -R /mnt/gentoo tank
+zfs mount tank/os/gentoo
+zfs mount tank/home
+mount -t zfs
+```
+
+```shell
+$ df -h
+
+Filesystem      Size  Used Avail Use% Mounted on
+devtmpfs         10M     0   10M   0% /dev
+tmpfs           7.9G     0  7.9G   0% /dev/shm
+tmpfs           7.9G   44M  7.8G   1% /run
+/dev/sr0        3.6G  3.6G     0 100% /run/initramfs/live
+/dev/loop0      3.5G  3.5G     0 100% /run/rootfsbase
+LiveOS_rootfs   7.9G   44M  7.8G   1% /
+tmpfs           1.6G   28K  1.6G   1% /run/user/1000
+tmpfs           1.6G     0  1.6G   0% /run/user/0
+tank/os/gentoo   38G  128K   38G   1% /mnt/gentoo
+tank/home        38G  128K   38G   1% /mnt/gentoo/home
+```
+
+Stage3:
+```shell
+cd /mnt/gentoo
+curl -fLO https://ftp.linux.cz/pub/linux/gentoo/releases/amd64/autobuilds/current-stage3-amd64-desktop-openrc/stage3-amd64-desktop-openrc-20250608T165347Z.tar.xz
+tar xpvf stage3-*.tar.xz --xattrs-include='*.*' --numeric-owner
+```
+
+Cloning my repo (Live GUI CD has `git` command):
+```shell
+cd /mnt/gentoo/root
+git clone https://github.com/hpaluch/gentoo-files.git
+# copy chroot scripts:
+cp gentoo-files/chroot-scripts/standard/*.sh /mnt/gentoo
+( cd gentoo-files/gentoo-zfs/etc/portage && find . type f | cpio -pvdm /mnt/gentoo/etc/portage/ )
+cp gentoo-files/gentoo-zfs/etc/locale.gen /mnt/gentoo/etc
+```
+
+Entering chroot:
+```shell
+cd /mnt/gentoo
+./bind_mounts.sh # do this only once
+./enter_chroot.sh
+source /init_shell.sh
+```
+
+TODO: setup mostly from https://github.com/hpaluch/hpaluch.github.io/wiki/Gentoo-setup
+
+
+ZFS notes:
+
+- kernel must have enabled Compression -> Deflate for ZFS module
+- before using Dracut you have to create `/etc/dracut.conf.d/zol.conf` with contents (from Wiki):
+
+  ```
+  nofsck="yes"
+  add_dracutmodules+=" zfs "
+  ```
+
+- before emerging GRUB ensure that you enabled `libzfs` - in my case I have
+  in `/etc/portage/package.use/custom`:
+
+  ```
+  sys-boot/grub libzfs
+  ```
+
+- have to enable service to mount all other datasets than root:
+
+  ```shell
+  rc-update add zfs-mount default
+  ```
+
+
+Main system tools:
+```shell
+emerge -an sys-fs/ncdu app-portage/gentoolkit app-editors/vim app-misc/mc app-admin/sudo \
+  app-misc/tmux app-admin/sysstat sys-apps/smartmontools \
+  net-misc/dhcpcd app-admin/rsyslog sys-process/cronie app-shells/bash-completion \
+  sys-process/lsof
+```
+
